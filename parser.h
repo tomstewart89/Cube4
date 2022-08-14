@@ -27,6 +27,7 @@ typedef struct command_s {
 byte parseCommandAll(char *message, byte length, byte *position, command_t *command, bytecode_t *bytecode);
 byte parseCommandShift(char *message, byte length, byte *position, command_t *command, bytecode_t *bytecode);
 byte parseCommandSet(char *message, byte length, byte *position, command_t *command, bytecode_t *bytecode);
+byte parseCommandSetAll(char *message, byte length, byte *position, command_t *command, bytecode_t *bytecode);
 byte parseCommandNext(char *message, byte length, byte *position, command_t *command, bytecode_t *bytecode);
 byte parseCommandLine(char *message, byte length, byte *position, command_t *command, bytecode_t *bytecode);
 byte parseCommandBox(char *message, byte length, byte *position, command_t *command, bytecode_t *bytecode);
@@ -40,6 +41,7 @@ command_t commands[] = {
   "all",       parseCommandAll,       executeNop,
   "shift",     parseCommandShift,     executeNop,
   "set",       parseCommandSet,       executeNop,
+  "setall",    parseCommandSetAll,    executeNop,
   "next",      parseCommandNext,      executeNop,
   "line",      parseCommandLine,      executeNop,
   "box",       parseCommandBox,      executeNop,

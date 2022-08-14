@@ -153,6 +153,37 @@ byte parseCommandSet(
   return(errorCode);
 };
 
+byte parseCommandSetAll(
+    char *message,
+    byte length,
+    byte *position,
+    command_t *command,
+    bytecode_t *bytecode)
+{
+
+  byte errorCode = 0;
+  bytecode->executer = command->executer;
+
+  skipWhitespace(message, length, position);
+  errorCode = parseRGB(message, length, position, &bytecode->u.lit.colorFrom);
+
+  if (errorCode == 0)
+    cubeSet(0, 0, 0, bytecode->u.lit.colorFrom);
+
+  for (int i = 0; i < NUM_CELLS - 1; ++i)
+  {
+    skipWhitespace(message, length, position);
+    errorCode = parseRGB(message, length, position, &bytecode->u.lit.colorFrom);
+
+    if (errorCode != 0)
+      break;
+
+    cubeNext(bytecode->u.lit.colorFrom);
+  }
+
+  return (errorCode);
+};
+
 byte parseCommandLine(
   char       *message,
   byte        length,
@@ -364,6 +395,7 @@ byte parseCommandHelp(
     serial->println("Entire cube:");
     serial->println("  all <colour>;                                        (eg: 'all RED;', or 'all ff0000;')");
     serial->println("  shift <axis> <direction>;                            (eg: 'shift X +;', or 'shift Y -;')");
+    serial->println("  setall <colour> (x64);                               (eg: 'setall RED GREEN BLUE;', or 'setall ff0000 00ff00 0000ff;')");
     serial->println("Single LED:");
     serial->println("  set <location> <colour>;                             (eg: 'set 112 GREEN;', or 'set 112 00ff00;')");
     serial->println("  next <colour>;                                       (eg: 'next BLUE;', or 'next 0000ff;')");
